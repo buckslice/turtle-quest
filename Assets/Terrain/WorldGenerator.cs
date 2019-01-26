@@ -287,7 +287,7 @@ public class WorldGenerator : MonoBehaviour {
 
         total = (total + 1) / 2.0f;
         //Color c = grad.Evaluate(total);
-        total = total * 0.4f;
+        total = total * 0.8f;
         //float colnoise = (Noise.Billow(position, 4, 0.02f) + 1.0f) / 2.0f;
         //Color c = new Color(0.2f, 0.1f, colnoise);
         //c = new Color(.6f, .6f, .1f + colnoise / 3.0f);

@@ -9,7 +9,7 @@ public class TurtleController : MonoBehaviour {
     Quaternion origin = Quaternion.identity;
     Transform cam;
     Rigidbody camBody;
-    float moveSpeed = 2.0f;
+    float moveSpeed = 4.0f;
 
     // Start is called before the first frame update
     void Start() {
