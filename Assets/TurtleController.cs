@@ -33,7 +33,7 @@ public class TurtleController : MonoBehaviour {
         cam.localRotation = att; // * Quaternion.Inverse(origin); // doesnt work anymore when combined. not sure if even needed
         camBody.velocity = cam.forward * moveSpeed;
 
-        Vector3 targetPoint = cam.position + cam.forward * 4.0f;
+        Vector3 targetPoint = cam.position + cam.forward * 3.0f;
         Vector3 dir = targetPoint - body.position;
         body.velocity = dir.normalized * 5.0f * dir.magnitude;
 

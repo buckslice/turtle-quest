@@ -38,12 +38,8 @@
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 			//o.Albedo = c.rgb * IN.vertexColor;  // combine normal color with vertex color
 
-
-            //float f = fbm(float3(IN.uv_MainTex, 0), 3, 5000, 0.5, 3.0)*0.00005;
-            //o.Albedo = c.rgb * (0.5 + swag(fbm(float3(IN.worldPos, 0), 3, 20000., 0.5, 4.0))*0.5);
-
-            float f = fbm(IN.worldPos, 3, .01, 0.5, 3.0)*20;
-            o.Albedo = c.rgb * _Color.rgb * (0.7 + swag(fbm(IN.worldPos + f, 3, .5, 0.5, 4.0))*0.3);
+            float f = fbm(IN.worldPos + float3(0,0,_Time.x*5), 4, .01, 0.5, 3.0)*20;
+            o.Albedo = c.rgb * _Color.rgb * (0.7 + swag(fbm(IN.worldPos + f, 5, .5, 0.5, 4.0))*0.3);
 
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
