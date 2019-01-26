@@ -146,7 +146,6 @@ MonoBehaviour:
   newChunksPerFrame: 1
   chunkSize: 16
   tileScale: 2
-  flatShaded: 0
   randomSeed: 1
   seed: 1000
   grad:
@@ -179,7 +178,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   mat: {fileID: 2100000, guid: 2fb489d5dbeeb2f418e98ba8a7e80381, type: 2}
-  fadeMat: {fileID: 2100000, guid: aeacda2a1a168c044847efaa37ec3c1a, type: 2}
+  prefabs:
+  - {fileID: 4948051720910134202, guid: 07925b12fb10f4f4d9de4ab399a44bc3, type: 3}
 --- !u!4 &123907268
 Transform:
   m_ObjectHideFlags: 0

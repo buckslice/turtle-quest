@@ -36,11 +36,9 @@ public class WorldGenerator : MonoBehaviour {
     [Tooltip("Scale of each tile in chunk")]
     public float tileScale = 1.0f;
     // private variables set on start to prevent changes during runtime
-    int size;
-    float scale;
-    float chunkScale;
-
-    public bool flatShaded = false;
+    int GRID_SIZE;
+    float GRID_SCALE;
+    float CHUNK_SCALE;
 
     public bool randomSeed = false;
     public int seed = 1000;
@@ -48,7 +46,8 @@ public class WorldGenerator : MonoBehaviour {
 
     public Gradient grad;
     public Material mat;
-    public Material fadeMat;
+
+    public GameObject[] prefabs;
 
     Rigidbody playerRigid;
     float playerStartHeight;
@@ -88,7 +87,7 @@ public class WorldGenerator : MonoBehaviour {
             playerRigid.velocity = Vector3.down * 0.1f;
         }
 
-        float loadDist = chunkLoadRadius * chunkScale;
+        float loadDist = chunkLoadRadius * CHUNK_SCALE;
 
         newChunks.Clear();
         distances.Clear();
@@ -100,8 +99,8 @@ public class WorldGenerator : MonoBehaviour {
                     continue;
                 }
 
-                float cx = cc.x * chunkScale;
-                float cy = cc.y * chunkScale;
+                float cx = cc.x * CHUNK_SCALE;
+                float cy = cc.y * CHUNK_SCALE;
                 float sqrDist = (p.x - cx) * (p.x - cx) + (p.z - cy) * (p.z - cy);
 
                 if (sqrDist > loadDist * loadDist) {
@@ -137,8 +136,8 @@ public class WorldGenerator : MonoBehaviour {
         // remove chunks that are too far away
         toRemove.Clear();
         foreach (var cc in chunkMap.Keys) {
-            float cx = cc.x * chunkScale;
-            float cy = cc.y * chunkScale;
+            float cx = cc.x * CHUNK_SCALE;
+            float cy = cc.y * CHUNK_SCALE;
             float sqrDist = (p.x - cx) * (p.x - cx) + (p.z - cy) * (p.z - cy);
             if (sqrDist > loadDist * loadDist + 1.0f) {
                 toRemove.Add(cc);
@@ -164,102 +163,92 @@ public class WorldGenerator : MonoBehaviour {
         offset2 = Noise.NextRandomOffset(rng);
 
         // init variables here
-        size = chunkSize;
-        scale = tileScale;
-        chunkScale = size * scale;
+        GRID_SIZE = chunkSize;
+        GRID_SCALE = tileScale;
+        CHUNK_SCALE = GRID_SIZE * GRID_SCALE;
     }
 
     Vec2 WorldToChunk(float x, float z) {
-        int px = (int)((x - chunkScale / 2.0f * (x > 0.0f ? -1.0f : 1.0f)) / chunkScale);
-        int pz = (int)((z - chunkScale / 2.0f * (z > 0.0f ? -1.0f : 1.0f)) / chunkScale);
+        int px = (int)((x - CHUNK_SCALE / 2.0f * (x > 0.0f ? -1.0f : 1.0f)) / CHUNK_SCALE);
+        int pz = (int)((z - CHUNK_SCALE / 2.0f * (z > 0.0f ? -1.0f : 1.0f)) / CHUNK_SCALE);
         return new Vec2(px, pz);
     }
 
     GameObject BuildChunk(Vec2 coord) {
-        Vector3[] verts = new Vector3[(size + 1) * (size + 1)];
-        int[] tris = new int[size * size * 6];
+        Vector3[] verts = new Vector3[(GRID_SIZE + 3) * (GRID_SIZE + 3)];
+        int[] tris = new int[(GRID_SIZE + 2) * (GRID_SIZE + 2) * 6];
         Color32[] colors = new Color32[verts.Length];
         //Vector2[] uvs = new Vector2[verts.Length];
+        GameObject go = new GameObject(string.Format("Chunk ({0},{1})", coord.x, coord.y));
 
         // generate vertices and colors
-        for (int i = 0, y = 0; y <= size; ++y) {
-            for (int x = 0; x <= size; ++x, ++i) {
-                float xf = (x + coord.x * size - size / 2.0f) * scale;
-                float yf = (y + coord.y * size - size / 2.0f) * scale;
+        for (int i = 0, y = -1; y <= GRID_SIZE + 1; ++y) {
+            for (int x = -1; x <= GRID_SIZE + 1; ++x, ++i) {
+                float xf = (x + coord.x * GRID_SIZE - GRID_SIZE / 2.0f) * GRID_SCALE;
+                float yf = (y + coord.y * GRID_SIZE - GRID_SIZE / 2.0f) * GRID_SCALE;
                 TerrainPoint tp = GeneratePoint(xf, yf);
                 verts[i] = tp.pos;
                 colors[i] = tp.col;
+
+                if (Random.value < 0.02f) {
+                    GameObject pre = Instantiate(prefabs[Random.Range(0, prefabs.Length)], tp.pos, Random.rotation, go.transform);
+                    pre.transform.localScale = Vector3.one * (1 + Random.value * 2);
+                }
             }
         }
         // generate triangles
-        bool mode = true;
-        for (int t = 0, i = 0; i < (size + 1) * size; ++i) {
-            if (i % (size + 1) == size) {
-                continue;
-            }
-            if (mode) { // swap edge diagonal
-                tris[t++] = i;
-                tris[t++] = i + size + 1;
-                tris[t++] = i + size + 2;
-                tris[t++] = i + size + 2;
-                tris[t++] = i + 1;
-                tris[t++] = i;
-            } else {
-                tris[t++] = i;
-                tris[t++] = i + size + 1;
-                tris[t++] = i + 1;
-                tris[t++] = i + 1;
-                tris[t++] = i + size + 1;
-                tris[t++] = i + size + 2;
-            }
-            mode = !mode;
+        GenerateTriangles(tris, GRID_SIZE + 2);
+
+        // generate the normals
+        Vector3[] normals = new Vector3[verts.Length];
+        for (int i = 0; i < tris.Length / 3; ++i) {
+            int a = tris[i * 3];
+            int b = tris[i * 3 + 1];
+            int c = tris[i * 3 + 2];
+
+            Vector3 va = verts[a];
+            Vector3 vb = verts[b];
+            Vector3 vc = verts[c];
+
+            Vector3 norm = Vector3.Cross(vb - va, vc - va);
+            normals[a] += norm;
+            normals[b] += norm;
+            normals[c] += norm;
+        }
+        for (int i = 0; i < normals.Length; ++i) {
+            normals[i].Normalize();
         }
 
-        Mesh m = new Mesh();
-        m.vertices = verts;
-        m.triangles = tris;
-        m.colors32 = colors;
+        // now slice off extra vert layer
+        Vector3[] vs = new Vector3[(GRID_SIZE + 1) * (GRID_SIZE + 1)];
+        Color32[] cs = new Color32[vs.Length];
+        Vector3[] ns = new Vector3[vs.Length];
+        int[] ts = new int[GRID_SIZE * GRID_SIZE * 6];
+        for (int y = 0; y < GRID_SIZE + 1; ++y) {
+            for (int x = 0; x < GRID_SIZE + 1; ++x) {
+                int oi = x + y * (GRID_SIZE + 1);
+                int ci = (x + 1) + (y + 1) * (GRID_SIZE + 3);
+                vs[oi] = verts[ci];
+                cs[oi] = colors[ci];
+                ns[oi] = normals[ci];
+            }
+        }
 
-        GameObject go = new GameObject(string.Format("Chunk ({0},{1})", coord.x, coord.y));
+        GenerateTriangles(ts, GRID_SIZE);
+
+        Mesh m = new Mesh();
+        m.vertices = vs;
+        m.triangles = ts;
+        m.colors32 = cs;
+        m.normals = ns;
+
         go.transform.parent = transform;
 
         // build mesh collider from the shared mesh
         go.AddComponent<MeshCollider>().sharedMesh = m;
 
-        // if flatshading there can be no vertex sharing
-        // so split vertices and color array
-        if (flatShaded) {
-            Vector3[] newVerts = new Vector3[tris.Length];
-            Color32[] newColors = new Color32[tris.Length];
-
-            for (int i = 0; i < tris.Length; ++i) {
-                int t = tris[i];
-                newVerts[i] = verts[t];
-                newColors[i] = colors[t];
-                tris[i] = i;
-            }
-
-            // average colors
-            int tc = 3; // change to 6 if you want to average color per square
-            for (int i = 0; i < tris.Length; i += tc) {
-                Color sum = new Color();
-                for (int j = 0; j < tc; ++j) {
-                    sum += newColors[i + j];
-                }
-                sum /= tc;
-                for (int j = 0; j < tc; ++j) {
-                    newColors[i + j] = sum;
-                }
-            }
-
-            m = new Mesh();
-            m.vertices = newVerts;
-            m.triangles = tris;
-            m.colors32 = newColors;
-        }
-
         m.RecalculateBounds();
-        m.RecalculateNormals();
+        //m.RecalculateNormals();
 
         go.AddComponent<MeshFilter>().mesh = m;
         MeshRenderer mr = go.AddComponent<MeshRenderer>();
@@ -267,6 +256,32 @@ public class WorldGenerator : MonoBehaviour {
         mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 
         return go;
+    }
+
+    void GenerateTriangles(int[] tris, int s) {
+        for (int y = 0; y < s; ++y) {
+            for (int x = 0; x < s; ++x) {
+                int i = (x + y * s) * 6;
+                int a = x + y * (s + 1);
+                int b = x + (y + 1) * (s + 1);
+                // swap every other one for diamond pattern
+                if ((x + y) % 2 == 0) {
+                    tris[i] = a;
+                    tris[i + 1] = b;
+                    tris[i + 2] = b + 1;
+                    tris[i + 3] = b + 1;
+                    tris[i + 4] = a + 1;
+                    tris[i + 5] = a;
+                } else {
+                    tris[i] = b;
+                    tris[i + 1] = b + 1;
+                    tris[i + 2] = a + 1;
+                    tris[i + 3] = a + 1;
+                    tris[i + 4] = a;
+                    tris[i + 5] = b;
+                }
+            }
+        }
     }
 
     // main generation function called on to generate each point in the mesh
