@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//https://alastaira.wordpress.com/2013/08/24/the-7dfps-game-jam-augmented-reality-and-spectral-echoes/
 public class TurtleController : MonoBehaviour {
     Rigidbody body;
     Quaternion origin = Quaternion.identity;
