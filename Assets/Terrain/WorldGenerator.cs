@@ -47,7 +47,8 @@ public class WorldGenerator : MonoBehaviour {
     public Gradient grad;
     public Material mat;
 
-    public GameObject[] doodads;
+    public GameObject rockPrefab;
+    public GameObject kelpPrefab;
     public GameObject[] creatures;
 
     Rigidbody playerRigid;
@@ -183,6 +184,8 @@ public class WorldGenerator : MonoBehaviour {
         GameObject go = new GameObject(string.Format("Chunk ({0},{1})", coord.x, coord.y));
 
         // generate vertices and colors
+        List<Vector3> kelpPoints = new List<Vector3>();
+
         for (int i = 0, y = -1; y <= GRID_SIZE + 1; ++y) {
             for (int x = -1; x <= GRID_SIZE + 1; ++x, ++i) {
                 float xf = (x + coord.x * GRID_SIZE - GRID_SIZE / 2.0f) * GRID_SCALE;
@@ -191,12 +194,16 @@ public class WorldGenerator : MonoBehaviour {
                 verts[i] = tp.pos;
                 colors[i] = tp.col;
 
+                if (Noise.Billow(new Vector3(xf, yf, 0), 3, 0.02f) > 0.0f) {
+                    kelpPoints.Add(tp.pos);
+                }
+
                 if (Random.value < 0.015f) {
-                    GameObject pre = Instantiate(doodads[Random.Range(0, doodads.Length)], tp.pos, Random.rotation, go.transform);
+                    GameObject pre = Instantiate(rockPrefab, tp.pos, Random.rotation, go.transform);
 
                     MeshData data = MeshGenerator.GenerateIcosphere(1);
-                    for(int j = 0; j < data.vertices.Length; ++j) {
-                        data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.3f,0.8f)) * 0.3f;
+                    for (int j = 0; j < data.vertices.Length; ++j) {
+                        data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.3f, 0.8f)) * 0.3f;
                     }
                     pre.GetComponent<MeshFilter>().sharedMesh = data.CreateMesh();
 
@@ -204,10 +211,15 @@ public class WorldGenerator : MonoBehaviour {
                 }
 
                 if (Random.value < 0.005f) {
-                    GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], tp.pos + Vector3.up * (2.0f + Random.value*10.0f), Quaternion.identity, go.transform);
+                    GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], tp.pos + Vector3.up * (2.0f + Random.value * 10.0f), Quaternion.identity, go.transform);
                 }
             }
         }
+
+        Mesh kelps = MeshGenerator.GenerateStrips(kelpPoints);
+        GameObject kelpGo = Instantiate(kelpPrefab, Vector3.zero, Quaternion.identity, go.transform);
+        kelpGo.GetComponent<MeshFilter>().sharedMesh = kelps;
+
         // generate triangles
         GenerateTriangles(tris, GRID_SIZE + 2);
 

@@ -141,8 +141,7 @@ public static class MeshGenerator {
         return index++;
     }
 
-
-    private static MeshData GenerateSquarePyramid() {
+    public static MeshData GenerateSquarePyramid() {
         List<Vector3> verts = new List<Vector3>();
         List<int> tris = new List<int>();
 
@@ -183,7 +182,7 @@ public static class MeshGenerator {
         return new MeshData(verts, tris);
     }
 
-    private static MeshData GenerateTriangularPyramid() {
+    public static MeshData GenerateTriangularPyramid() {
         List<Vector3> verts = new List<Vector3>();
         List<int> tris = new List<int>();
 
@@ -221,6 +220,45 @@ public static class MeshGenerator {
         }
 
         return new MeshData(verts, tris);
+    }
+
+    public static Mesh GenerateStrips(List<Vector3> points) {
+        List<Vector3> verts = new List<Vector3>();
+        List<int> tris = new List<int>();
+        int tri = 0;
+        for (int p = 0; p < points.Count; ++p) {
+            int pieces = Random.Range(10, 20);
+            for (int i = 0; i < pieces + 1; ++i) {
+                Quaternion q = Random.rotation;
+                float ww = 1.0f - i / pieces;
+                Vector3 aa = new Vector3(Random.Range(-0.8f, -0.4f) * ww, 0, 0);
+                Vector3 bb = new Vector3(Random.Range(0.4f, 0.8f) * ww, 0, 0);
+                Vector3 aq = q * aa;
+                Vector3 bq = q * bb;
+                aq.y = i;
+                bq.y = i;
+                verts.Add(points[p] + aq);
+                verts.Add(points[p] + bq);
+                //verts.Add(points[p] + new Vector3(Random.Range(-0.5f, -0.2f), i, Random.Range(-0.5f, -0.2f)));
+                //verts.Add(points[p] + new Vector3(Random.Range(0.2f, 0.5f), i, Random.Range(0.2f, 0.5f)));
+            }
+            for (int i = 0; i < pieces; ++i) {
+                tris.Add(tri);
+                tris.Add(tri + 2);
+                tris.Add(tri + 1);
+                tris.Add(tri + 1);
+                tris.Add(tri + 2);
+                tris.Add(tri + 3);
+                tri += 2;
+            }
+            tri += 2;
+        }
+        Mesh m = new Mesh();
+        m.vertices = verts.ToArray();
+        m.triangles = tris.ToArray();
+
+        return m;
+
     }
 
 }

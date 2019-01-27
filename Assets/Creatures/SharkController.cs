@@ -54,12 +54,9 @@ public class SharkController : MonoBehaviour {
             default:
                 break;
         }
-        body.velocity = Vector3.Lerp(body.velocity, targetVel, Time.deltaTime * 1.0f);
-        //lerp this rotation too
-        // also make shark wiggle shader
-        transform.rotation = Quaternion.LookRotation(body.velocity.normalized, Vector3.up);
-        if (body.velocity.sqrMagnitude > 1) {
-        }
+        body.velocity = Vector3.Lerp(body.velocity, targetVel, Time.deltaTime * 5.0f);
+        //transform.rotation = Quaternion.LookRotation(body.velocity.normalized, Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(body.velocity.normalized, Vector3.up), Time.deltaTime * 2.0f);
     }
 
     private void OnCollisionEnter(Collision collision) {
