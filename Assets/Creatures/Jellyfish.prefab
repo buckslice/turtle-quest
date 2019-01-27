@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2118276972267275124}
   - component: {fileID: 2118276972267275147}
   - component: {fileID: 2118276972267275146}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Pulsating Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4718,7 +4718,7 @@ GameObject:
   - component: {fileID: 2118276972270667226}
   - component: {fileID: 2118276972270667045}
   - component: {fileID: 2118276972270667044}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Membrane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9425,7 +9425,7 @@ GameObject:
   - component: {fileID: 2118276972686586319}
   - component: {fileID: 2118276972686586160}
   - component: {fileID: 2118276972686586161}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Tentacles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14124,7 +14124,7 @@ GameObject:
   - component: {fileID: 4577033376494822334}
   - component: {fileID: 7246701420706124033}
   - component: {fileID: 2592745494619034020}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Jellyfish
   m_TagString: Jelly
   m_Icon: {fileID: 0}
