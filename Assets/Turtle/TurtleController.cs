@@ -9,7 +9,12 @@ public class TurtleController : MonoBehaviour {
     Transform cam;
     Rigidbody camBody;
     float moveSpeed = 4.0f;
+    const float initSpeed = 4;
+    const float boostSpeed = 10;
     Animator anim;
+    public Material shellMat;
+    int happy;
+    public AnimationCurve happyCurve;
 
     // Start is called before the first frame update
     void Start() {
@@ -20,6 +25,9 @@ public class TurtleController : MonoBehaviour {
 
         body = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+
+        happy = Shader.PropertyToID("_HappyMode");
+        shellMat.SetFloat(happy, 0.0f);
     }
 
     // Update is called once per frame
@@ -44,18 +52,41 @@ public class TurtleController : MonoBehaviour {
 
     }
 
+    Coroutine speedRoutine = null;
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.CompareTag("Jelly")) {
             Destroy(collision.collider.gameObject);
             //moveSpeed += 1.0f;
-            Game.instance.IncrementScore();
+            //Game.instance.IncrementScore();
             anim.SetTrigger("Eat");
+            if (speedRoutine != null) {
+                StopCoroutine(speedRoutine);
+            }
+            speedRoutine = StartCoroutine(BoostSpeedRoutine());
         }
         if (collision.collider.CompareTag("Shark")) {
-            Game.instance.EndGame();
+            //Game.instance.EndGame();
         }
         if (collision.collider.CompareTag("Trash")) {
-            Game.instance.DecrementScore();
+            //Game.instance.DecrementScore();
         }
+    }
+
+    IEnumerator BoostSpeedRoutine() {
+        float t = 0.0f;
+        float timer = 8.0f;
+
+        while (t < timer) {
+            t += Time.deltaTime;
+            float c = happyCurve.Evaluate(t / timer);
+            moveSpeed = Mathf.Lerp(initSpeed, boostSpeed, c);
+            shellMat.SetFloat(happy, c);
+            anim.speed = Mathf.Lerp(1.0f, 3.0f, c);
+            yield return null;
+        }
+        moveSpeed = initSpeed;
+        shellMat.SetFloat(happy, 0.0f);
+        anim.speed = 1.0f;
+        speedRoutine = null;
     }
 }

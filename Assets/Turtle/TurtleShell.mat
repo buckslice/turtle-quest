@@ -63,6 +63,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HappyMode: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -75,3 +76,4 @@ Material:
     m_Colors:
     - _Color: {r: 0.09904432, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HappyColor: {r: 0.02441454, g: 0, b: 1, a: 1}

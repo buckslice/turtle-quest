@@ -46,7 +46,7 @@
             //fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             //o.Albedo = _Color * worley(IN.objPos + float3(0,0,_Time.x), 4, 1, 0.5, 3.0,1.5,1.5);
 
-            o.Albedo = _Color * (1.-(0.5+worley(IN.objPos + float3(0, _Time.x*2.7,0), 2, 2, 0.5, 2.0, .5, 3.5)*.5));
+            o.Albedo = _Color * (1.-(0.5+worley(IN.objPos + float3(0, _Time.x*.7,0), 2, 2, 0.5, 2.0, .5, 3.5)*.5));
             //o.Albedo *= worleyCell(IN.objPos*5. + float3(_Time.x*3,_Time.x*7,_Time.x*5));
             o.Albedo *= ripples(IN.worldPos);
 

@@ -3,8 +3,10 @@
     Properties
     {
         _Color ("Color", Color) = (1,1,1,1)
+        _HappyColor("HappyColor", Color) = (1,1,1,1)
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
+        _HappyMode ("HappyMode", Range(0,1)) = 0.0
     }
     SubShader
     {
@@ -34,6 +36,8 @@
         half _Glossiness;
         half _Metallic;
         fixed4 _Color;
+        fixed4 _HappyColor;
+        half _HappyMode;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -47,7 +51,8 @@
             // Albedo comes from a texture tinted by color
             //fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             //o.Albedo = _Color * ridged(IN.objPos + float3(0,0,_Time.x), 5, 1, 0.5, 3.0);
-            o.Albedo = _Color * worley(IN.objPos + float3(0, 0, _Time.x*1.0), 4, 7, 0.5, 2.0, 5.5, .5);
+            o.Albedo = _Color * worley(IN.objPos + float3(0, 0, _Time.x + _HappyMode * sin(_Time.y*5.0)*0.2), 4, 7, 0.5, 2.0, 5.5, .5);
+            o.Albedo += _HappyColor * _HappyMode;
             o.Albedo *= ridged(IN.objPos + float3(0, 0, _Time.x), 5, 1, 0.5, 3.0)*.4+.6;
             o.Albedo *= ripples(IN.worldPos);
             // Metallic and smoothness come from slider variables
