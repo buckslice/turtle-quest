@@ -6,7 +6,6 @@ using UnityEngine;
 //https://alastaira.wordpress.com/2013/08/24/the-7dfps-game-jam-augmented-reality-and-spectral-echoes/
 public class TurtleController : MonoBehaviour {
     Rigidbody body;
-    Quaternion origin = Quaternion.identity;
     Transform cam;
     Rigidbody camBody;
     float moveSpeed = 4.0f;
@@ -17,7 +16,6 @@ public class TurtleController : MonoBehaviour {
         camBody = cam.root.GetComponent<Rigidbody>();
 
         Input.gyro.enabled = true;
-        origin = Input.gyro.attitude;
 
         body = GetComponent<Rigidbody>();
 
@@ -27,17 +25,28 @@ public class TurtleController : MonoBehaviour {
     void Update() {
         Quaternion att = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, -Input.gyro.attitude.z, -Input.gyro.attitude.w);
 
-        if (Input.touchCount > 0 || origin == Quaternion.identity)
-            origin = Input.gyro.attitude;
-
         cam.localRotation = att; // * Quaternion.Inverse(origin); // doesnt work anymore when combined. not sure if even needed
-        camBody.velocity = cam.forward * moveSpeed;
+
+        if (Input.touchCount > 0) {
+            camBody.velocity = Vector3.zero;
+        } else {
+            camBody.velocity = cam.forward * moveSpeed;
+        }
 
         Vector3 targetPoint = cam.position + cam.forward * 3.0f;
         Vector3 dir = targetPoint - body.position;
-        body.velocity = dir.normalized * 5.0f * dir.magnitude;
+        body.velocity = dir.normalized * moveSpeed * 1.5f * dir.magnitude;
 
-        body.rotation = Quaternion.Slerp(body.rotation, Quaternion.LookRotation(body.velocity, Vector3.up), Time.deltaTime * 5.0f);
+        if (body.velocity.sqrMagnitude > 0.1f) {
+            body.rotation = Quaternion.Slerp(body.rotation, Quaternion.LookRotation(body.velocity, Vector3.up), Time.deltaTime * 5.0f);
+        }
 
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.collider.CompareTag("Jelly")) {
+            Destroy(collision.collider.gameObject);
+            moveSpeed += 1.0f;
+        }
     }
 }

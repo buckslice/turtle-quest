@@ -47,7 +47,8 @@ public class WorldGenerator : MonoBehaviour {
     public Gradient grad;
     public Material mat;
 
-    public GameObject[] prefabs;
+    public GameObject[] doodads;
+    public GameObject[] creatures;
 
     Rigidbody playerRigid;
     float playerStartHeight;
@@ -191,7 +192,7 @@ public class WorldGenerator : MonoBehaviour {
                 colors[i] = tp.col;
 
                 if (Random.value < 0.015f) {
-                    GameObject pre = Instantiate(prefabs[Random.Range(0, prefabs.Length)], tp.pos, Random.rotation, go.transform);
+                    GameObject pre = Instantiate(doodads[Random.Range(0, doodads.Length)], tp.pos, Random.rotation, go.transform);
 
                     MeshData data = MeshGenerator.GenerateIcosphere(1);
                     for(int j = 0; j < data.vertices.Length; ++j) {
@@ -200,6 +201,10 @@ public class WorldGenerator : MonoBehaviour {
                     pre.GetComponent<MeshFilter>().sharedMesh = data.CreateMesh();
 
                     pre.transform.localScale = Vector3.one * (1 + Random.value * 2);
+                }
+
+                if (Random.value < 0.01f) {
+                    GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], tp.pos + Vector3.up * (2.0f + Random.value*10.0f), Quaternion.identity, go.transform);
                 }
             }
         }
