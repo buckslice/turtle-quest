@@ -9,6 +9,7 @@ public class TurtleController : MonoBehaviour {
     Transform cam;
     Rigidbody camBody;
     float moveSpeed = 4.0f;
+    Animator anim;
 
     // Start is called before the first frame update
     void Start() {
@@ -18,7 +19,7 @@ public class TurtleController : MonoBehaviour {
         Input.gyro.enabled = true;
 
         body = GetComponent<Rigidbody>();
-
+        anim = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -47,6 +48,7 @@ public class TurtleController : MonoBehaviour {
         if (collision.collider.CompareTag("Jelly")) {
             Destroy(collision.collider.gameObject);
             moveSpeed += 1.0f;
+            anim.SetTrigger("Eat");
         }
     }
 }

@@ -203,7 +203,7 @@ public class WorldGenerator : MonoBehaviour {
                     pre.transform.localScale = Vector3.one * (1 + Random.value * 2);
                 }
 
-                if (Random.value < 0.01f) {
+                if (Random.value < 0.005f) {
                     GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], tp.pos + Vector3.up * (2.0f + Random.value*10.0f), Quaternion.identity, go.transform);
                 }
             }
