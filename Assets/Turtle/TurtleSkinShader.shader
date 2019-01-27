@@ -22,6 +22,7 @@
 
         struct Input {
             float3 objPos;
+            float3 worldPos;
         };
 
         void vert(inout appdata_full v, out Input o) {
@@ -43,6 +44,7 @@
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             o.Albedo = _Color * (worley(IN.objPos + _Time.x*.5, 2, 10, 0.5, 2.0,5.5,3.5)*0.5+0.5);
+            o.Albedo *= ripples(IN.worldPos);
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;

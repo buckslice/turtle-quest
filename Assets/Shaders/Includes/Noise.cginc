@@ -324,6 +324,32 @@ float worleyNoise(float3 xyz, int cellType, int distanceFunction) {
         return dist1;
 }
 
+// cool celltype , distance func combos
+// 1 7
+float3 worleyCell(float3 xyz) {
+    int xi = int(floor(xyz.x));
+    int yi = int(floor(xyz.y));
+    int zi = int(floor(xyz.z));
+
+    float xf = xyz.x - float(xi);
+    float yf = xyz.y - float(yi);
+    float zf = xyz.z - float(zi);
+
+    float3 cell;
+
+    for (int z = MinVal; z <= MaxVal; z++) {
+        for (int y = MinVal; y <= MaxVal; y++) {
+            for (int x = MinVal; x <= MaxVal; x++) {
+                cell = FAST32_hash_3D_Cell(float3(xi + x, yi + y, zi + z)).xyz;
+                cell.x += (float(x) - xf);
+                cell.y += (float(y) - yf);
+                cell.z += (float(z) - zf);
+            }
+        }
+    }
+
+    return cell;
+}
 
 float worley(float3 p, int octaves, float frequency, float persistence, float lacunarity, int cellType, int distanceFunction) {
     float sum = 0;
@@ -341,4 +367,9 @@ float worley(float3 p, int octaves, float frequency, float persistence, float la
 // rescales from -1 to 1 from 0 to 1
 float swag(float v) {
     return (v + 1.0) / 2.0;
+}
+
+float3 ripples(float3 wp) {
+    return 0.5+0.5*(worley(wp + float3(_Time.x*7, _Time.x * 17, -_Time.x * 30), 3, .5, 0.5, 2.0, .5, 3.5));
+    
 }

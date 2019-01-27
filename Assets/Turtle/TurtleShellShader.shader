@@ -23,6 +23,7 @@
         struct Input
         {
             float3 objPos;
+            float3 worldPos;
         };
 
         void vert(inout appdata_full v, out Input o) {
@@ -45,7 +46,10 @@
         {
             // Albedo comes from a texture tinted by color
             //fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = _Color * ridged(IN.objPos + float3(0,0,_Time.x), 5, 1, 0.5, 3.0);
+            //o.Albedo = _Color * ridged(IN.objPos + float3(0,0,_Time.x), 5, 1, 0.5, 3.0);
+            o.Albedo = _Color * worley(IN.objPos + float3(0, 0, _Time.x*1.0), 4, 7, 0.5, 2.0, 5.5, .5);
+            o.Albedo *= ridged(IN.objPos + float3(0, 0, _Time.x), 5, 1, 0.5, 3.0)*.4+.6;
+            o.Albedo *= ripples(IN.worldPos);
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
