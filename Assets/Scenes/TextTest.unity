@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.019607844, g: 0.4117647, b: 0.6509804, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.024
+  m_FogColor: {r: 0.18009077, g: 0.6582884, b: 0.6698113, a: 1}
+  m_FogMode: 2
+  m_FogDensity: 0.05
   m_LinearFogStart: 5
   m_LinearFogEnd: 100
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c7247f7d043134d809d72b9c111236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkLoadRadius: 6
+  chunkLoadRadius: 3
   newChunksPerFrame: 1
-  chunkSize: 8
+  chunkSize: 16
   tileScale: 2
   randomSeed: 1
   seed: 1000
@@ -296,15 +296,15 @@ RectTransform:
   m_GameObject: {fileID: 247999438}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1612009246}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1884.9557, y: 431}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &247999440
 MonoBehaviour:
@@ -315,7 +315,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 247999438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d83d1a6b67206a4fb6e0c9df29e4697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -328,20 +328,21 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
-    m_MaxSize: 40
-    m_Alignment: 0
+    m_MinSize: 0
+    m_MaxSize: 50
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'TurtleQuest
-
-'
+  m_Text: Turtle Quest
+  radius: 3
+  wrapAngle: 360
+  scaleFactor: 100
 --- !u!222 &247999441
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -516,37 +517,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 247999438}
-  shellMat: {fileID: 2100000, guid: 2d197d007a310184e90b3599e4192e31, type: 2}
+  shellMat: {fileID: 0}
   happyCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.09858397
-      value: 0.9952812
-      inSlope: -0.24425559
-      outSlope: -0.24425559
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.6856901
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -4.186325
-      outSlope: -4.186325
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.03154543
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -833,7 +807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1612009243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +943,75 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1001 &1772517084242884846
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4859504375837499558, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_Name
+      value: Kelp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.10586019
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.057118416
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.7864292
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359477389846611977, guid: cc65ad36d074cad478a422679e4e7586,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc65ad36d074cad478a422679e4e7586, type: 3}
 --- !u!1001 &2319006824392846720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1051,7 +1094,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.019607844, g: 0.4117647, b: 0.6509804, a: 0}
+  m_BackGroundColor: {r: 0.18039216, g: 0.65882355, b: 0.67058825, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
