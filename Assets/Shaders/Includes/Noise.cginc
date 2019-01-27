@@ -242,7 +242,6 @@ static const int MaxVal = 1;
 
 // cool celltype , distance func combos
 // 1 7
-
 float worleyNoise(float3 xyz, int cellType, int distanceFunction) {
     int xi = int(floor(xyz.x));
     int yi = int(floor(xyz.y));
@@ -324,6 +323,7 @@ float worleyNoise(float3 xyz, int cellType, int distanceFunction) {
     else
         return dist1;
 }
+
 
 float worley(float3 p, int octaves, float frequency, float persistence, float lacunarity, int cellType, int distanceFunction) {
     float sum = 0;

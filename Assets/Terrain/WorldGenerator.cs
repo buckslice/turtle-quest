@@ -190,8 +190,15 @@ public class WorldGenerator : MonoBehaviour {
                 verts[i] = tp.pos;
                 colors[i] = tp.col;
 
-                if (Random.value < 0.02f) {
+                if (Random.value < 0.015f) {
                     GameObject pre = Instantiate(prefabs[Random.Range(0, prefabs.Length)], tp.pos, Random.rotation, go.transform);
+
+                    MeshData data = MeshGenerator.GenerateIcosphere(1);
+                    for(int j = 0; j < data.vertices.Length; ++j) {
+                        data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.3f,0.8f)) * 0.3f;
+                    }
+                    pre.GetComponent<MeshFilter>().sharedMesh = data.CreateMesh();
+
                     pre.transform.localScale = Vector3.one * (1 + Random.value * 2);
                 }
             }
