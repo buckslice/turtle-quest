@@ -228,7 +228,7 @@ public static class MeshGenerator {
         List<Vector2> uvs = new List<Vector2>();
         int tri = 0;
         for (int p = 0; p < points.Count; ++p) {
-            int pieces = Random.Range(10, 20);
+            int pieces = Random.Range(10, 30);
             for (int i = 0; i < pieces + 1; ++i) {
                 Quaternion q = Random.rotation;
                 float ww = 1.0f - i / pieces;

@@ -33,7 +33,7 @@ public class SharkController : MonoBehaviour {
                 float dist = Vector3.Distance(transform.position, turtle.position);
                 if (dist < 80.0f && cooldownTimer < 0.0f) {
                     currentState = SharkState.CHARGING;
-                    cooldownTimer = 10.0f;
+                    cooldownTimer = Random.Range(15.0f, 30.0f);
                     targetVel = dir * chargeSpeed;
                     chargeTimer = dist / chargeSpeed + 4.0f;
                 } else {

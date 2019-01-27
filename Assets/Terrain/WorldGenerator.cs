@@ -48,6 +48,7 @@ public class WorldGenerator : MonoBehaviour {
     public Material mat;
 
     public GameObject rockPrefab;
+    public GameObject coralPrefab;
     public GameObject kelpPrefab;
     public GameObject[] creatures;
 
@@ -194,20 +195,32 @@ public class WorldGenerator : MonoBehaviour {
                 verts[i] = tp.pos;
                 colors[i] = tp.col;
 
-                if (Noise.Billow(new Vector3(xf, yf, 0), 3, 0.02f) > 0.0f) {
+                if (Noise.Billow(new Vector3(xf, yf, 0), 3, 0.02f) > -0.2f) {
                     kelpPoints.Add(tp.pos);
                 }
 
-                if (Random.value < 0.015f) {
-                    GameObject pre = Instantiate(rockPrefab, tp.pos, Random.rotation, go.transform);
+                if (Random.value < 0.02f) {
+                    bool isCoral = Random.value < 0.25f;
+                    if (isCoral) {
+                        GameObject pre = Instantiate(coralPrefab, tp.pos, Random.rotation, go.transform);
+                        MeshData data = MeshGenerator.GenerateIcosphere(3);
+                        for (int j = 0; j < data.vertices.Length; ++j) {
+                            data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.5f, 1.0f)) * 0.5f;
+                        }
+                        pre.GetComponent<MeshFilter>().sharedMesh = data.CreateMesh();
 
-                    MeshData data = MeshGenerator.GenerateIcosphere(1);
-                    for (int j = 0; j < data.vertices.Length; ++j) {
-                        data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.3f, 0.8f)) * 0.3f;
+                        pre.transform.localScale = Vector3.one * (2 + Random.value * 5);
+                    } else {
+                        GameObject pre = Instantiate(rockPrefab, tp.pos, Random.rotation, go.transform);
+                        MeshData data = MeshGenerator.GenerateIcosphere(1);
+                        for (int j = 0; j < data.vertices.Length; ++j) {
+                            data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.3f, 0.8f)) * 0.3f;
+                        }
+                        pre.GetComponent<MeshFilter>().sharedMesh = data.CreateMesh();
+
+                        pre.transform.localScale = Vector3.one * (1 + Random.value * 3);
                     }
-                    pre.GetComponent<MeshFilter>().sharedMesh = data.CreateMesh();
 
-                    pre.transform.localScale = Vector3.one * (1 + Random.value * 2);
                 }
 
                 if (Random.value < 0.005f) {

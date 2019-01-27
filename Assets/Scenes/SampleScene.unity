@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.019607844, g: 0.4117647, b: 0.6509804, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.022
+  m_FogDensity: 0.024
   m_LinearFogStart: 5
   m_LinearFogEnd: 100
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c7247f7d043134d809d72b9c111236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkLoadRadius: 3
+  chunkLoadRadius: 6
   newChunksPerFrame: 1
-  chunkSize: 16
+  chunkSize: 8
   tileScale: 2
   randomSeed: 1
   seed: 1000
@@ -179,6 +179,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   mat: {fileID: 2100000, guid: 2fb489d5dbeeb2f418e98ba8a7e80381, type: 2}
   rockPrefab: {fileID: 4948051720910134202, guid: 07925b12fb10f4f4d9de4ab399a44bc3,
+    type: 3}
+  coralPrefab: {fileID: 4948051720910134202, guid: 6620e9d8f977e0843844345ab4d80c74,
     type: 3}
   kelpPrefab: {fileID: 4859504375837499558, guid: cc65ad36d074cad478a422679e4e7586,
     type: 3}
@@ -513,6 +515,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7b74813095534d91d118f0dfbf7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shellMat: {fileID: 2100000, guid: 2d197d007a310184e90b3599e4192e31, type: 2}
+  happyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.09858397
+      value: 0.9952812
+      inSlope: -0.24425559
+      outSlope: -0.24425559
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.6856901
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -4.186325
+      outSlope: -4.186325
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03154543
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &650813277
 Transform:
   m_ObjectHideFlags: 0
