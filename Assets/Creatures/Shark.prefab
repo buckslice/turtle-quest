@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 1212277768}
   m_Layer: 11
   m_Name: Shark
-  m_TagString: Shark
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -428,7 +428,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &1212277768
 MonoBehaviour:
@@ -444,7 +444,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chargeSpeed: 20
   idleSpeed: 10
-  currentState: 0
 --- !u!1 &1680406886394008
 GameObject:
   m_ObjectHideFlags: 0

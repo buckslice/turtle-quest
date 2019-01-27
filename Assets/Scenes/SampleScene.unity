@@ -299,10 +299,10 @@ RectTransform:
   m_Father: {fileID: 1612009246}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.8}
-  m_AnchorMax: {x: 0.5, y: 0.8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1256.6371, y: 431}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &247999440
 MonoBehaviour:
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 247999438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d83d1a6b67206a4fb6e0c9df29e4697, type: 3}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -326,21 +326,20 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 4
-    m_MaxSize: 50
-    m_Alignment: 4
+    m_MaxSize: 40
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Turtle Quest
-  radius: 2
-  wrapAngle: 360
-  scaleFactor: 100
+  m_Text: 'TurtleQuest
+
+'
 --- !u!222 &247999441
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -466,6 +465,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1212277770, guid: bf96853aad0d6894ca25e660b314ba44, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 1212277770, guid: bf96853aad0d6894ca25e660b314ba44, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf96853aad0d6894ca25e660b314ba44, type: 3}
 --- !u!1 &650813271
@@ -514,7 +521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7b74813095534d91d118f0dfbf7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 247999438}
 --- !u!4 &650813277
 Transform:
   m_ObjectHideFlags: 0

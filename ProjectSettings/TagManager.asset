@@ -7,7 +7,6 @@ TagManager:
   - Turtle
   - Jelly
   - Trash
-  - Shark
   layers:
   - Default
   - TransparentFX
