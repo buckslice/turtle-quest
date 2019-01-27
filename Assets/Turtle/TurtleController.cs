@@ -47,8 +47,15 @@ public class TurtleController : MonoBehaviour {
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.CompareTag("Jelly")) {
             Destroy(collision.collider.gameObject);
-            moveSpeed += 1.0f;
+            //moveSpeed += 1.0f;
+            Game.instance.IncrementScore();
             anim.SetTrigger("Eat");
+        }
+        if (collision.collider.CompareTag("Shark")) {
+            Game.instance.EndGame();
+        }
+        if (collision.collider.CompareTag("Trash")) {
+            Game.instance.DecrementScore();
         }
     }
 }

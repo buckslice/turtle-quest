@@ -319,6 +319,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plastic Bag
       objectReference: {fileID: 0}
+    - target: {fileID: 857637476, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
+      propertyPath: m_TagString
+      value: Trash
+      objectReference: {fileID: 0}
+    - target: {fileID: 857637476, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 857637480, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -363,9 +371,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 657330500, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 946348297, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 946348300, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
       propertyPath: EmissionModule.rateOverDistance.scalar
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 920438808, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 920438811, guid: b46dbfff02371734ba70a4794bb2f55b, type: 3}
       propertyPath: EmissionModule.rateOverDistance.scalar
