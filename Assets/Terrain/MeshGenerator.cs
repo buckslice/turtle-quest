@@ -225,6 +225,7 @@ public static class MeshGenerator {
     public static Mesh GenerateStrips(List<Vector3> points) {
         List<Vector3> verts = new List<Vector3>();
         List<int> tris = new List<int>();
+        List<Vector2> uvs = new List<Vector2>();
         int tri = 0;
         for (int p = 0; p < points.Count; ++p) {
             int pieces = Random.Range(10, 20);
@@ -239,6 +240,9 @@ public static class MeshGenerator {
                 bq.y = i;
                 verts.Add(points[p] + aq);
                 verts.Add(points[p] + bq);
+                uvs.Add(new Vector2(0, (float)i / pieces));
+                uvs.Add(new Vector2(1, (float)i / pieces));
+
                 //verts.Add(points[p] + new Vector3(Random.Range(-0.5f, -0.2f), i, Random.Range(-0.5f, -0.2f)));
                 //verts.Add(points[p] + new Vector3(Random.Range(0.2f, 0.5f), i, Random.Range(0.2f, 0.5f)));
             }
@@ -255,6 +259,7 @@ public static class MeshGenerator {
         }
         Mesh m = new Mesh();
         m.vertices = verts.ToArray();
+        m.uv = uvs.ToArray();
         m.triangles = tris.ToArray();
 
         return m;

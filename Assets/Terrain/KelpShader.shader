@@ -15,7 +15,7 @@
         CGPROGRAM
         #include "Assets/Shaders/Includes/Noise.cginc" 
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard fullforwardshadows vertex:vert
+        #pragma surface surf Standard fullforwardshadows vertex:vert addshadow
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
@@ -29,7 +29,7 @@
             UNITY_INITIALIZE_OUTPUT(Input, o);
             o.objPos = v.vertex;
 
-            v.vertex = v.vertex + float4(1, 0, 0, 0) * sin(_Time.y*2.0 + v.vertex.x + v.vertex.z + v.vertex.y*2.0)*0.3;
+            v.vertex = v.vertex + float4(1, 0, 0, 0) * sin(_Time.y*1 + v.vertex.x + v.vertex.z + v.vertex.y*5.0)*v.texcoord.y;
         }
 
         half _Glossiness;
@@ -46,6 +46,7 @@
         void surf(Input IN, inout SurfaceOutputStandard o) {
             // Albedo comes from a texture tinted by color
             o.Albedo = _Color.rgb + ridged(IN.objPos + float3(0, 0, _Time.x), 2, 1, 0.5, 3.0)*.2;
+            o.Albedo *= ripples(IN.worldPos);
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
