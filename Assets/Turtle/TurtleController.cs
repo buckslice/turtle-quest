@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 //https://alastaira.wordpress.com/2013/08/24/the-7dfps-game-jam-augmented-reality-and-spectral-echoes/
 public class TurtleController : MonoBehaviour {
+    public GameObject text;
     Rigidbody body;
     Transform cam;
     Rigidbody camBody;
@@ -42,7 +43,10 @@ public class TurtleController : MonoBehaviour {
     void Update() {
         invuln -= Time.deltaTime;
         Quaternion att = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, -Input.gyro.attitude.z, -Input.gyro.attitude.w);
-
+        Quaternion textq = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, 0, 0);
+        Vector3 axis = Vector3.zero;
+        textq.ToAngleAxis(out float angle, out axis);
+        text.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         cam.localRotation = att; // * Quaternion.Inverse(origin); // doesnt work anymore when combined. not sure if even needed
 
         if (Input.touchCount > 0) {
