@@ -8,6 +8,7 @@ TagManager:
   - Jelly
   - Trash
   - Shark
+  - Recycler
   layers:
   - Default
   - TransparentFX

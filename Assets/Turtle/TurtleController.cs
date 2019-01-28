@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //https://alastaira.wordpress.com/2013/08/24/the-7dfps-game-jam-augmented-reality-and-spectral-echoes/
 public class TurtleController : MonoBehaviour {
@@ -9,12 +11,18 @@ public class TurtleController : MonoBehaviour {
     Transform cam;
     Rigidbody camBody;
     float moveSpeed = 4.0f;
-    const float initSpeed = 4;
-    const float boostSpeed = 10;
+    float initSpeed = 4;
+    float boostSpeed = 10;
     Animator anim;
     public Material shellMat;
     int happy;
     public AnimationCurve happyCurve;
+    public Transform trashHolder;
+    public Text text;
+    int score = 0;
+    float invuln = 0.0f;
+
+    public List<GameObject> limbs;
 
     // Start is called before the first frame update
     void Start() {
@@ -32,6 +40,7 @@ public class TurtleController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        invuln -= Time.deltaTime;
         Quaternion att = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, -Input.gyro.attitude.z, -Input.gyro.attitude.w);
 
         cam.localRotation = att; // * Quaternion.Inverse(origin); // doesnt work anymore when combined. not sure if even needed
@@ -63,13 +72,62 @@ public class TurtleController : MonoBehaviour {
                 StopCoroutine(speedRoutine);
             }
             speedRoutine = StartCoroutine(BoostSpeedRoutine());
+
+            //if (trashHolder.childCount > 0) {
+            //    Destroy(trashHolder.GetChild(Random.Range(0, trashHolder.childCount)).gameObject);
+            //}
         }
-        if (collision.collider.CompareTag("Shark")) {
+        if (collision.collider.CompareTag("Shark") && invuln < 0.0f) {
             //Game.instance.EndGame();
+            //score -= 3;
+            //UpdateText();
+            invuln = 1.0f;
+
+            if (limbs.Count == 0) {
+                if (!reseting) {
+                    reseting = true;
+                    StartCoroutine(DeathRoutine());
+                }
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+
+            int limbdex = Random.Range(0, limbs.Count);
+            GameObject limb = limbs[limbdex];
+            limbs.RemoveAt(limbdex);
+            Destroy(limb);
+
+            if (limbs.Count == 0) {
+                if (!reseting) {
+                    reseting = true;
+                    StartCoroutine(DeathRoutine());
+                }
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+
         }
+
         if (collision.collider.CompareTag("Trash")) {
             //Game.instance.DecrementScore();
+            Destroy(collision.collider.GetComponent<MonoBehaviour>());
+            Destroy(collision.collider.GetComponent<Rigidbody>());
+            collision.collider.transform.SetParent(trashHolder, true);
+            //initSpeed -= 0.5f;
+            //if(initSpeed < 1.0f) {
+            //    initSpeed = 1.0f;
+            //}
         }
+
+        if (collision.collider.CompareTag("Recycler")) {
+            for (int i = 0; i < trashHolder.childCount; ++i) {
+                Destroy(trashHolder.GetChild(i).gameObject);
+                score += 1;
+            }
+            UpdateText();
+        }
+    }
+
+    void UpdateText() {
+        text.text = "Recycled: " + score;
     }
 
     IEnumerator BoostSpeedRoutine() {
@@ -89,4 +147,18 @@ public class TurtleController : MonoBehaviour {
         anim.speed = 1.0f;
         speedRoutine = null;
     }
+
+    bool reseting = false;
+    IEnumerator DeathRoutine() {
+        Time.timeScale = 0.0f;
+
+        text.fontSize = 100;
+        text.text = "GAME OVER! " + text.text;
+
+        yield return new WaitForSecondsRealtime(5.0f);
+
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
 }

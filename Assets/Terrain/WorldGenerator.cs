@@ -50,7 +50,9 @@ public class WorldGenerator : MonoBehaviour {
     public GameObject rockPrefab;
     public GameObject coralPrefab;
     public GameObject kelpPrefab;
+    public GameObject recyclerPrefab;
     public GameObject[] creatures;
+    public GameObject[] trashes;
 
     Rigidbody playerRigid;
     float playerStartHeight;
@@ -223,8 +225,16 @@ public class WorldGenerator : MonoBehaviour {
 
                 }
 
+                if (Random.value < 0.0025f) {
+                    GameObject g = Instantiate(recyclerPrefab, tp.pos + Vector3.up * 0.8f, Quaternion.identity, go.transform);
+                }
+
                 if (Random.value < 0.005f) {
                     GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], tp.pos + Vector3.up * (2.0f + Random.value * 10.0f), Quaternion.identity, go.transform);
+                }
+
+                if (Random.value < 0.0015f) {
+                    GameObject trash = Instantiate(trashes[Random.Range(0, trashes.Length)], new Vector3(tp.pos.x, 70 - Random.Range(1.0f, 10.0f), tp.pos.z), Random.rotation, go.transform);
                 }
             }
         }

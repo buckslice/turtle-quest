@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 657330501}
   - component: {fileID: 657330503}
   - component: {fileID: 657330502}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Bag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4719,9 +4719,9 @@ GameObject:
   - component: {fileID: 857637479}
   - component: {fileID: 857637478}
   - component: {fileID: 857637477}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Plastic Bag
-  m_TagString: Jelly
+  m_TagString: Trash
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4795,7 +4795,7 @@ GameObject:
   - component: {fileID: 920438809}
   - component: {fileID: 920438811}
   - component: {fileID: 920438810}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9493,7 +9493,7 @@ GameObject:
   - component: {fileID: 946348298}
   - component: {fileID: 946348300}
   - component: {fileID: 946348299}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

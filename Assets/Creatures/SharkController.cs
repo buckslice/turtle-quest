@@ -7,12 +7,14 @@ public class SharkController : MonoBehaviour {
     public float idleSpeed;
     Rigidbody body;
     Transform turtle;
-    public enum SharkState { CHARGING, IDLE, RISING }
+    public enum SharkState { CHARGING, IDLE, RISING, FEEDING }
     public SharkState currentState;
     float chargeTimer = 0.0f;
     float cooldownTimer = 0.0f;
+    float feedingTime = 0.0f;
     Vector3 targetVel = Vector3.zero;
     bool clockwise = true;
+    public ParticleSystem bloods;
     // Start is called before the first frame update
     void Start() {
         turtle = GameObject.Find("Turtle").transform;
@@ -54,12 +56,31 @@ public class SharkController : MonoBehaviour {
             default:
                 break;
         }
+        if (currentState == SharkState.FEEDING) {
+            feedingTime -= Time.deltaTime;
+            if (feedingTime < 0.0f) {
+                currentState = SharkState.IDLE;
+            }
+            if (!bloods.isPlaying) {
+                bloods.Play();
+            }
+        } else {
+            bloods.Stop();
+        }
         body.velocity = Vector3.Lerp(body.velocity, targetVel, Time.deltaTime * 5.0f);
         //transform.rotation = Quaternion.LookRotation(body.velocity.normalized, Vector3.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(body.velocity.normalized, Vector3.up), Time.deltaTime * 2.0f);
     }
 
     private void OnCollisionEnter(Collision collision) {
-        currentState = SharkState.RISING;
+        if (collision.collider.CompareTag("Turtle") && currentState == SharkState.CHARGING) {
+            targetVel = Vector3.zero;
+            currentState = SharkState.FEEDING;
+            feedingTime = 5.0f;
+        } else {
+            currentState = SharkState.RISING;
+        }
+
+
     }
 }
