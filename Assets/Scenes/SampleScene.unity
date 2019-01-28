@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c7247f7d043134d809d72b9c111236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkLoadRadius: 6
+  chunkLoadRadius: 3
   newChunksPerFrame: 1
-  chunkSize: 8
+  chunkSize: 16
   tileScale: 2
   randomSeed: 1
   seed: 1000
@@ -563,7 +563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7b74813095534d91d118f0dfbf7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 247999438}
   shellMat: {fileID: 2100000, guid: 2d197d007a310184e90b3599e4192e31, type: 2}
   happyCurve:
     serializedVersion: 2
@@ -1103,6 +1102,14 @@ PrefabInstance:
     - target: {fileID: 4308436538012164, guid: c670f995a1eed7640a0838c2fd7d0972, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4119298788143062, guid: c670f995a1eed7640a0838c2fd7d0972, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4119298788143062, guid: c670f995a1eed7640a0838c2fd7d0972, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c670f995a1eed7640a0838c2fd7d0972, type: 3}

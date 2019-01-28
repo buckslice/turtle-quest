@@ -182,7 +182,6 @@ public class WorldGenerator : MonoBehaviour {
     GameObject BuildChunk(Vec2 coord) {
         Vector3[] verts = new Vector3[(GRID_SIZE + 3) * (GRID_SIZE + 3)];
         int[] tris = new int[(GRID_SIZE + 2) * (GRID_SIZE + 2) * 6];
-        Color32[] colors = new Color32[verts.Length];
         //Vector2[] uvs = new Vector2[verts.Length];
         GameObject go = new GameObject(string.Format("Chunk ({0},{1})", coord.x, coord.y));
 
@@ -193,18 +192,17 @@ public class WorldGenerator : MonoBehaviour {
             for (int x = -1; x <= GRID_SIZE + 1; ++x, ++i) {
                 float xf = (x + coord.x * GRID_SIZE - GRID_SIZE / 2.0f) * GRID_SCALE;
                 float yf = (y + coord.y * GRID_SIZE - GRID_SIZE / 2.0f) * GRID_SCALE;
-                TerrainPoint tp = GeneratePoint(xf, yf);
-                verts[i] = tp.pos;
-                colors[i] = tp.col;
+                Vector3 p = GeneratePoint(xf, yf);
+                verts[i] = p;
 
                 if (Noise.Billow(new Vector3(xf, yf, 0), 3, 0.02f) > -0.2f) {
-                    kelpPoints.Add(tp.pos);
+                    kelpPoints.Add(p);
                 }
 
                 if (Random.value < 0.02f) {
                     bool isCoral = Random.value < 0.25f;
                     if (isCoral) {
-                        GameObject pre = Instantiate(coralPrefab, tp.pos, Random.rotation, go.transform);
+                        GameObject pre = Instantiate(coralPrefab, p, Random.rotation, go.transform);
                         MeshData data = MeshGenerator.GenerateIcosphere(3);
                         for (int j = 0; j < data.vertices.Length; ++j) {
                             data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.5f, 1.0f)) * 0.5f;
@@ -213,7 +211,7 @@ public class WorldGenerator : MonoBehaviour {
 
                         pre.transform.localScale = Vector3.one * (2 + Random.value * 5);
                     } else {
-                        GameObject pre = Instantiate(rockPrefab, tp.pos, Random.rotation, go.transform);
+                        GameObject pre = Instantiate(rockPrefab, p, Random.rotation, go.transform);
                         MeshData data = MeshGenerator.GenerateIcosphere(1);
                         for (int j = 0; j < data.vertices.Length; ++j) {
                             data.vertices[j] *= 1.0f + Noise.Ridged(data.vertices[j], 3, Random.Range(0.3f, 0.8f)) * 0.3f;
@@ -226,15 +224,15 @@ public class WorldGenerator : MonoBehaviour {
                 }
 
                 if (Random.value < 0.0025f) {
-                    GameObject g = Instantiate(recyclerPrefab, tp.pos + Vector3.up * 0.8f, Quaternion.identity, go.transform);
+                    GameObject g = Instantiate(recyclerPrefab, p + Vector3.up * 0.8f, Quaternion.identity, go.transform);
                 }
 
                 if (Random.value < 0.005f) {
-                    GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], tp.pos + Vector3.up * (2.0f + Random.value * 10.0f), Quaternion.identity, go.transform);
+                    GameObject creature = Instantiate(creatures[Random.Range(0, creatures.Length)], p + Vector3.up * (2.0f + Random.value * 10.0f), Quaternion.identity, go.transform);
                 }
 
                 if (Random.value < 0.0015f) {
-                    GameObject trash = Instantiate(trashes[Random.Range(0, trashes.Length)], new Vector3(tp.pos.x, 70 - Random.Range(1.0f, 10.0f), tp.pos.z), Random.rotation, go.transform);
+                    GameObject trash = Instantiate(trashes[Random.Range(0, trashes.Length)], new Vector3(p.x, 70 - Random.Range(1.0f, 10.0f), p.z), Random.rotation, go.transform);
                 }
             }
         }
@@ -268,7 +266,6 @@ public class WorldGenerator : MonoBehaviour {
 
         // now slice off extra vert layer
         Vector3[] vs = new Vector3[(GRID_SIZE + 1) * (GRID_SIZE + 1)];
-        Color32[] cs = new Color32[vs.Length];
         Vector3[] ns = new Vector3[vs.Length];
         int[] ts = new int[GRID_SIZE * GRID_SIZE * 6];
         for (int y = 0; y < GRID_SIZE + 1; ++y) {
@@ -276,7 +273,6 @@ public class WorldGenerator : MonoBehaviour {
                 int oi = x + y * (GRID_SIZE + 1);
                 int ci = (x + 1) + (y + 1) * (GRID_SIZE + 3);
                 vs[oi] = verts[ci];
-                cs[oi] = colors[ci];
                 ns[oi] = normals[ci];
             }
         }
@@ -286,7 +282,6 @@ public class WorldGenerator : MonoBehaviour {
         Mesh m = new Mesh();
         m.vertices = vs;
         m.triangles = ts;
-        m.colors32 = cs;
         m.normals = ns;
 
         go.transform.parent = transform;
@@ -333,7 +328,7 @@ public class WorldGenerator : MonoBehaviour {
 
     // main generation function called on to generate each point in the mesh
     // experiment with noise here!
-    TerrainPoint GeneratePoint(float x, float y) {
+    Vector3 GeneratePoint(float x, float y) {
         Vector3 position = new Vector3(x, 0.0f, y);
 
         float mountains = Noise.Ridged(position + offset1, 6, 0.0075f);
@@ -353,8 +348,7 @@ public class WorldGenerator : MonoBehaviour {
         //float colnoise = (Noise.Billow(position, 4, 0.02f) + 1.0f) / 2.0f;
         //Color c = new Color(0.2f, 0.1f, colnoise);
         //c = new Color(.6f, .6f, .1f + colnoise / 3.0f);
-        Color c = new Color(1, 1, 1);
-        return new TerrainPoint(new Vector3(x, total * 60.0f, y), c);
+        return new Vector3(x, total * 60.0f, y);
 
         //float xf = x * 0.04f + offset1.x;
         //float yf = y * 0.04f + offset1.y;
